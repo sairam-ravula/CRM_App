@@ -188,7 +188,7 @@ exports.updateTicket = async (req, res) => {
     req.body.status != undefined ? req.body.status : ticket.status;
 
   //* Ability to re-assign the ticket
-  if (user.userType == constants.userTypes.admin) {
+  if (user.userType == constants.userType.admin) {
     ticket.assignee =
       req.body.assignee != undefined ? req.body.assignee : ticket.assignee;
   }
@@ -196,6 +196,31 @@ exports.updateTicket = async (req, res) => {
   //* Save the changed the ticket
 
   const updatedTicket = await ticket.save();
+
+  const engineer = await User.findOne({
+    userID: updatedTicket.assignee,
+  });
+
+  const owner = await User.find({
+    userID: updatedTicket.reporter,
+  });
+
+  if (user.userType == constants.userType.admin)
+    notificationServiceClient(
+      updatedTicket._id,
+      "Updated your ticket : " + updatedTicket._id,
+      updatedTicket.description,
+      engineer.email + "," + owner.email + "," + user.email,
+      user.email
+    );
+  else
+    notificationServiceClient(
+      updatedTicket._id,
+      "Updated your ticket : " + updatedTicket._id,
+      updatedTicket.description,
+      engineer.email + "," + owner.email,
+      user.email
+    );
 
   //* Return the updated ticket
 
