@@ -33,3 +33,19 @@ exports.acceptNotificationRequest = async (req, res) => {
 /*
  * Check the notification status (if email is SENT OR UN_SENT) using the tracking_id
  */
+
+exports.getNotificationStatus = async (req, res) => {
+  const reqId = req.params.id;
+
+  try {
+    const notification = await Notification.findOne({ ticketId: reqId });
+    res.status(200).send({
+      requestId: notification.ticketId,
+      sentStatus: notification.sentStatus,
+    });
+  } catch (err) {
+    res.status(500).send({
+      message: "Internal Error while fetching the notification status",
+    });
+  }
+};
