@@ -12,7 +12,7 @@ const app = express();
 
 //* Register the body parser middleware to express
 
-app.use(bodyParser);
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(

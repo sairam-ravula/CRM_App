@@ -5,7 +5,9 @@
 const User = require("../models/user.model");
 const constants = require("../utils/constants");
 const Ticket = require("../models/ticket.model");
+
 const ObjectConverter = require("../utils/objectConverter");
+const notificationServiceClient = require("../utils/notificationServiceClient");
 
 exports.createTicket = async (req, res) => {
   //* Logic to create the ticket
@@ -19,6 +21,7 @@ exports.createTicket = async (req, res) => {
     /*
      * check If any engineer is available
      */
+    console.log("here");
     const engineer = await User.findOne({
       userType: constants.userType.engineer,
       userStatus: constants.userStatus.approved,
@@ -26,7 +29,7 @@ exports.createTicket = async (req, res) => {
     if (engineer) {
       ticketObject.assignee = engineer.userID;
     }
-
+    console.log("here1");
     const ticketCreated = await Ticket.create(ticketObject);
     /*
      * Ticket is created now
@@ -44,10 +47,18 @@ exports.createTicket = async (req, res) => {
       /*
        * Update the engineer
        */
+      console.log(user);
       if (engineer) {
         engineer.ticketsAssigned.push(ticketCreated._id);
         await engineer.save();
       }
+      notificationServiceClient(
+        ticketCreated._id,
+        "Created a new ticket : " + ticketCreated._id,
+        ticketCreated.description,
+        engineer.email + "," + user.email,
+        user.email
+      );
     }
     return res.status(201).send(ObjectConverter.ticketResponse(ticketCreated));
   } catch (err) {
