@@ -19,10 +19,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 /*
  * Setup mongodb connection and create Admin user
  */
-mongoose.connect(dbConfig.DB_URL, () => {
-  console.log("MongoDB connected");
-  init();
-});
+mongoose.connect(
+  dbConfig.DB_URL,
+  { useUnifiedTopology: true, useNewUrlParser: true },
+  () => {
+    console.log("MongoDB connected");
+    init();
+  }
+);
 
 async function init() {
   const user = await User.findOne({ userID: "admin" });
