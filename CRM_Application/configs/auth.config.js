@@ -1,3 +1,3 @@
 module.exports = {
-    secret : "Parveen-Sairam-Super-Secret"
+  secret: "Tejaswari-Sairam-Super-Secret",
 };
