@@ -19,7 +19,7 @@ This project is Node.js back-end code for CRM Application that can create users,
 ## External Application:
 
 1.	Notification service
-2.	
+
 ## Features:
 ### Account Creation
 
@@ -40,13 +40,11 @@ This project is Node.js back-end code for CRM Application that can create users,
 ### User creation and operations
 
 1.	Sign-up:
-2.	
 POST “/crm/api/v1/auth/signup”
 
 Register with username, password, userID, userType
 
 2.	Sign-in:
-
 POST “/crm/api/v1/auth/signin”
 
 User sign in using userId and password
@@ -93,6 +91,6 @@ An engineer and admin can update the ticket using its ticket ID.
 
 •	User and engineer will get email notifications upon creation and updating the tickets.
 
-•	Both CRM_App and Notification Service App will talk to each other using #### node-rest-client.
+•	Both CRM_App and Notification Service App will talk to each other using node-rest-client.
 
 •	The app made use of CRON jobs to schedule the email notification.
